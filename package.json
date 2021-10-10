@@ -1,0 +1,21 @@
+{
+    "name": "bot",
+    "version": "1.0.0",
+    "description": "",
+    "main": "bot.js",
+    "scripts": {
+        "start": "nodemon bot.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^10.0.0",
+        "flipkart-api-affiliate-client": "^1.1.0",
+        "node-telegram-bot-api": "^0.54.0",
+        "nodemon": "^2.0.12",
+        "pricefinder-ecommerce": "^0.3.4",
+        "telegraf": "^3.32.0"
+    }
+}
