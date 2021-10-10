@@ -32,7 +32,6 @@ bot.onText(/\/bookmark/, async (msg, match) => {
         return;
     }
      const product = await pricefinder(url, "amazon");
-     console.log(product)
      if(product.available){
         bot.sendMessage(
             chatId,
