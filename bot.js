@@ -7,7 +7,8 @@ const pricefinder = require('pricefinder-ecommerce');
 
 // Created instance of TelegramBot
 const bot = new TelegramBot(token, {
-    polling: true
+    polling: true,
+    port:process.env.port||80
 });
 
 
@@ -37,26 +38,31 @@ bot.onText(/\/bookmark/, async (msg, match) => {
             chatId,
             `Item is available and price is ${product.price}`,
         );
-        return;
     }else{
+        bot.sendMessage(
+            chatId,
+            `Item is not available.We will notify when it will come to stock`
+        );
         urls.push({
             user:chatId,
             url:url
         })
     }
-    console.log(urls)
 });
 
 function checkAvailability() {
     
     urls.forEach(async (url)=>{
         const product = await pricefinder(url.url, "amazon");
-        console.log(product)
         if(product.available){
             await  bot.sendMessage(
                 url.user,
                 `Item is available and price is ${product.price}`,
             );
+            urls = array.filter(function(value, index, arr){ 
+                return value!=url;
+            });
+            console.log(urls)
         }
     })
 }
