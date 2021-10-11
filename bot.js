@@ -4,13 +4,19 @@ var client = require('flipkart-api-affiliate-client');
 const token = process.env.TOKEN;
 const pricefinder = require('pricefinder-ecommerce');
 
-
+const bot;
 // Created instance of TelegramBot
-const bot = new TelegramBot(token, {
-    polling: true,
-    port:process.env.port||80
-});
+// const bot = new TelegramBot(token, {
+//     polling: true,
+//     port:process.env.port||80
+// });
 
+if (process.env.NODE_ENV === 'production') {
+    bot = new TelegramBot(token);
+    bot.setWebHook(process.env.HEROKU_URL + bot.token);
+ } else {
+    bot = new TelegramBot(token, { polling: true });
+ }
 
 var fkClient = new client({
     trackingId:"<YOUR TRACKING ID>",
@@ -203,3 +209,18 @@ setInterval(checkAvailability, 5000);
 //         }
 //     );
 // });
+
+// Move the package imports to the top of the file
+const express = require('express')
+const bodyParser = require('body-parser');
+ 
+const app = express();
+ 
+app.use(bodyParser.json());
+ 
+app.listen(process.env.PORT);
+ 
+app.post('/' + bot.token, (req, res) => {
+  bot.processUpdate(req.body);
+  res.sendStatus(200);
+});
