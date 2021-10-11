@@ -6,11 +6,7 @@ const pricefinder = require('pricefinder-ecommerce');
 
 
 // Created instance of TelegramBot
-const bot = new TelegramBot(token, {
-    polling: true,
-    PORT:process.env.port||80
-});
-
+var bot = new TelegramBot(token, {webHook: {port: process.env.PORT, host: process.env.HOST}});
 
 var fkClient = new client({
     trackingId:"<YOUR TRACKING ID>",
