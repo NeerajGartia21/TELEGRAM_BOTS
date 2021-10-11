@@ -6,20 +6,27 @@ const pricefinder = require('pricefinder-ecommerce');
 
 
 // Created instance of TelegramBot
-var bot = new TelegramBot(token, {webHook: {port: process.env.PORT, host: process.env.HOST}});
+// var bot = new TelegramBot(token, {webHook: {port: process.env.PORT, host: '0.0.0.0'}});
+// bot.setWebHook(process.env.EXTERNAL_URL + ':443/bot' + token);
+const bot = new TelegramBot(token, {polling: true});
+
+
 
 var fkClient = new client({
     trackingId:"<YOUR TRACKING ID>",
     token:"<YOUR TOKEN>",
 },"<FORMAT>");
 
-const urls=[];
+let urls=[];
 
+
+bot.onText(/\/start/, (msg) => {
+     bot.sendMessage(msg.chat.id, 'Please send the url of amazon in the format `/bookmark <url>`');
+});
 // Listener (handler) for telegram's /bookmark event
 bot.onText(/\/bookmark/, async (msg, match) => {
     const chatId = msg.chat.id;
     const url = match.input.split(' ')[1];
-
     if (url === undefined) {
         bot.sendMessage(
             chatId,
@@ -28,7 +35,7 @@ bot.onText(/\/bookmark/, async (msg, match) => {
         return;
     }
      const product = await pricefinder(url, "amazon");
-     if(product.available){
+     if(product.available && product.price){
         bot.sendMessage(
             chatId,
             `Item is available and price is ${product.price}`,
@@ -49,12 +56,12 @@ function checkAvailability() {
     
     urls.forEach(async (url)=>{
         const product = await pricefinder(url.url, "amazon");
-        if(product.available){
+        if(product.available && product.price){
             await  bot.sendMessage(
                 url.user,
                 `Item is available and price is ${product.price}`,
             );
-            urls = array.filter(function(value, index, arr){ 
+            urls =await urls.filter(function(value, index, arr){ 
                 return value!=url;
             });
             console.log(urls)
