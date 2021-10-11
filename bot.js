@@ -4,19 +4,17 @@ var client = require('flipkart-api-affiliate-client');
 const token = process.env.TOKEN;
 const pricefinder = require('pricefinder-ecommerce');
 
-const bot;
+
 // Created instance of TelegramBot
 // const bot = new TelegramBot(token, {
 //     polling: true,
 //     port:process.env.port||80
 // });
 
-if (process.env.NODE_ENV === 'production') {
-    bot = new TelegramBot(token);
+
+    const bot = new TelegramBot(token);
     bot.setWebHook(process.env.HEROKU_URL + bot.token);
- } else {
-    bot = new TelegramBot(token, { polling: true });
- }
+
 
 var fkClient = new client({
     trackingId:"<YOUR TRACKING ID>",
