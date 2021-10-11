@@ -6,14 +6,10 @@ const pricefinder = require('pricefinder-ecommerce');
 
 
 // Created instance of TelegramBot
-// const bot = new TelegramBot(token, {
-//     polling: true,
-//     port:process.env.port||80
-// });
-
-
-    const bot = new TelegramBot(token);
-    bot.setWebHook(process.env.HEROKU_URL + bot.token);
+const bot = new TelegramBot(token, {
+    polling: true,
+    PORT:process.env.port||80
+});
 
 
 var fkClient = new client({
@@ -209,16 +205,3 @@ setInterval(checkAvailability, 5000);
 // });
 
 // Move the package imports to the top of the file
-const express = require('express')
-const bodyParser = require('body-parser');
- 
-const app = express();
- 
-app.use(bodyParser.json());
- 
-app.listen(process.env.PORT);
- 
-app.post('/' + bot.token, (req, res) => {
-  bot.processUpdate(req.body);
-  res.sendStatus(200);
-});
