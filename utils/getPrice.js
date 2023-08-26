@@ -4,7 +4,7 @@ const puppeteer= require('puppeteer')
 let browser;
 
 async function getPrice(url){
-  if(!browser) browser = await puppeteer.launch();
+  if(!browser) browser = await puppeteer.launch({headless:"new"});
   const page = await browser.newPage();
   await page.goto(url);
   await page.setViewport({width: 1080, height: 1024});
